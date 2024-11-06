@@ -1,5 +1,6 @@
 from codigo3 import *
 import pytest
+import requests 
 
 # def test_soma(lista_doida):
 #     assert sum(lista_doida) == 21
