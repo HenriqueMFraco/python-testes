@@ -1,16 +1,27 @@
-from flask import Flask, jsonify, request
+import requests
 
-app = Flask(__name__)
+class BancoDeDados:
+    def buscar(self, peidoid):
+        # Simula uma consulta ao banco de dados para obter um pedido
+        raise NotImplementedError("Consulta real ao banco de dados")
 
-@app.route('/api/data', methods=['GET'])
-def get_data():
-    return jsonify({"message": "Cuzinho!"}), 200
+def calcular(peidoid):
+    # Simula uma chamada a uma API externa para obter detalhes dos produtos
+    resposta = requests.get(f"http://api.loja.com/pedidos/{peidoid}")
+    dados_produtos = resposta.json()
+    
+    # Calcula o valor total com base no preço e quantidade de cada produto
+    total = sum(item["preco"] * item["quantidade"] for item in dados_produtos)
+    return total
 
-@app.route('/api/data', methods=['POST'])
-def post_data():
-    data = request.get_json()
-    return jsonify({"received": data}), 201
-
-if __name__ == '__main__':
-    app.run(port=5000)
-
+def obterPedidoTotal(peidoid, banco):
+    # Busca o pedido no banco de dados
+    pedido = banco.buscar(peidoid)
+    
+    # Calcula o valor total do pedido
+    valorTotal = calcular(peidoid)
+    
+    # Adiciona o valor total ao pedido
+    pedido["valorTotal"] = valorTotal
+    
+    return pedido
